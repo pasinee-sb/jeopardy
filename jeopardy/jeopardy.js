@@ -148,11 +148,11 @@ console.log(myClues);
 
 const okGo = async function(myClues){
 
-if(myClues.every(ele => ele.clues.length > 5) = true)
+if(myClues.every(ele => ele.clues.length > 5))
 {
         console.log('yay');
     
-    } else if (myClues.every(ele => ele.clues.length > 5) = false) {
+    } else {
         myCat = getCategoryIds();
       myClues = await getCategory(myCat);
  return okGo(myClues);
