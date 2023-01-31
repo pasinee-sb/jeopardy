@@ -119,17 +119,31 @@ async function handleClick(evt) {
     this.innerHTML = "";
 this.style.fontSize = "12px";
 this.style.lineHeight = "30px";
-const display = document.createElement('div');
-display.classList.add("my-card");
+const qDisplay = document.createElement('div');
+qDisplay.classList.add("my-card");
 const textDisplay =document.createElement('span');
 textDisplay.classList.add("card-text");
 textDisplay.innerHTML = this.getAttribute('question');
 const myButton = document.createElement('button');
 myButton.innerText = "answer";
 
-this.append(display);
-display.append(textDisplay);
-display.append(myButton);
+// const aDisplay = document.createElement('div');
+// aDisplay.classList.add("my-answer");
+const answerDisplay =document.createElement('span');
+answerDisplay.classList.add("card-answer");
+answerDisplay.innerHTML = this.getAttribute('answer');
+
+
+
+
+this.append(qDisplay);
+qDisplay.append(textDisplay);
+qDisplay.append(myButton);
+
+// this.append(aDisplay);
+qDisplay.append(answerDisplay);
+answerDisplay.classList.add('no-show');
+
 
 myButton.addEventListener("click", answer)
 
@@ -138,10 +152,10 @@ myButton.addEventListener("click", answer)
 
 async function answer() {
 
-this.parentElement.firstChild.innerHTML = "";
-
-console.log(this.parentElement);
-
+   console.log(this.parentElement);
+   this.parentElement.children[0].classList.add('no-show');
+   this.parentElement.children[1].classList.add('no-show');
+   this.parentElement.children[2].classList.remove('no-show')
 
 
 

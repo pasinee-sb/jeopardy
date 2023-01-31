@@ -48,10 +48,18 @@ h1{
   margin: 5px;
   padding: 5px;
   line-height: 120px;
+  position: relative;
  
  
 }
 
+.my-card, .my-answer {
+  position: absolute;
+}
+
+.no-show {
+  display: none;
+}
 
 
 @media print {
