@@ -76,56 +76,33 @@ async function getCategory(catId) {
  *   (initally, just show a "?" where the question/answer would go.)
  */
 
-function fillTable(myClues) {
-   
-let $jeopardyHead = $("#jeopardy thead");
-let $jeopardyBody = $("#jeopardy tbody");
+async function fillTable(myClues) {
 
-let $myHead = $(`<tr></tr>`);
-$jeopardyHead.append($myHead);
 
     for (let clue of myClues){
-
-        //attempted picking random question from clues array but not successful, could not identify bug, log cme out ok with an array of 
-        // randomized numbers
-        //always get error"jeopardy.js:124 TypeError: Cannot read properties of undefined (reading 'question')
-    // at fillTable (jeopardy.js:119:59) ( console.log("Questions: 4 "+ clue.clues[setOfNum[3]].question);)
-    // at HTMLButtonElement.handleStart (jeopardy.js:145:8)(fillTable(myClues);)
-
-    //     let range = clue.clues.length;
-    //     let count = 5
-    //  let nums = new Set();
-    //  while (nums.size < count) {
-    //   nums.add(Math.floor(Math.random() * (range - 1 + 1) + 1));
-    //      }
-         
-    //      let setOfNum =  [...nums]
-    console.log(clue);
-
-    // let setOfClues = _.sampleSize(clue, 5);
-    // console.log(setOfClues);
-
+    let setOfClues = _.sampleSize(clue.clues, 5);
+const $column = $(`<div class="category"></div>`);
     
-     
-    //    let $myTd = $(`<td ><h1>${clue.title}</h1></td>`);
-    //      $myHead.append($myTd);
-     
-    //  let $myQues = $(`
-    //  <tr><td ><p style="color: red" >${clue.clues[setOfNum[0]].question}</p></td></tr>
-    //  <tr><td ><p style="color: blue">${clue.clues[setOfNum[1]].question}</p></td></tr>
-    //  <tr><td ><p style="color: red">${clue.clues[setOfNum[2]].question}</p></td></tr>
-    //  <tr><td ><p style="color: blue">${clue.clues[setOfNum[3]].question}</p></td></tr>
-    //  <tr><td ><p style="color: red">${clue.clues[setOfNum[4]].question}</p></td></tr>
-    //  `)
-     
-    //  $jeopardyBody.append($myQues)
- 
-     }
+    const $catTitle = $(`<div class="catName"><p>${clue.title}<p></div>`);
     
+    $("#jeopardy").append($column).append($catTitle);
 
+console.log(setOfClues);
 
+            for(let question of setOfClues){
+
+    const $card = $(`<div class="card" question="${question.question}" answer="${question.answer}" showing=${question.showing}">?</div>`);
+    $catTitle.append($card);
+    
+  
+    $card.on("click", handleClick)
+}
+}
 
 }
+
+
+
 
 
 /** Handle clicking on a clue: show the question or answer.
@@ -136,32 +113,41 @@ $jeopardyHead.append($myHead);
  * - if currently "answer", ignore click
  * */
 
-// function handleClick(evt) {
-$("#start").on("click", async function handleStart(evt){
-        evt.preventDefault();
-        
-let myCat = getCategoryIds();
-let myClues = await getCategory(myCat);
-console.log(myClues);
+async function handleClick(evt) {
 
 
+    this.innerHTML = "";
+this.style.fontSize = "12px";
+this.style.lineHeight = "30px";
+const display = document.createElement('div');
+display.classList.add("my-card");
+const textDisplay =document.createElement('span');
+textDisplay.classList.add("card-text");
+textDisplay.innerHTML = this.getAttribute('question');
+const myButton = document.createElement('button');
+myButton.innerText = "answer";
 
-const okGo = async function(myClues){
+this.append(display);
+display.append(textDisplay);
+display.append(myButton);
 
-if(myClues.every(ele => ele.clues.length > 5))
-{
-        console.log('yay');
-    
-    } else {
-        myCat = getCategoryIds();
-      myClues = await getCategory(myCat);
- return okGo(myClues);
-    }
+myButton.addEventListener("click", answer)
 
 
 }
-        
-});
+
+async function answer() {
+
+this.parentElement.firstChild.innerHTML = "";
+
+console.log(this.parentElement);
+
+
+
+
+
+ }
+
 
 /** Wipe the current Jeopardy board, show the loading spinner,
  * and update the button used to fetch data.
@@ -174,6 +160,7 @@ function showLoadingView() {
 /** Remove the loading spinner and update the button used to fetch data. */
 
 function hideLoadingView() {
+    $("#spin-container").remove();
 }
 
 /** Start game:
@@ -183,8 +170,31 @@ function hideLoadingView() {
  * - create HTML table
  * */
 
-async function setupAndStart() {
+async function setupAndStart(evt) {
+    evt.preventDefault();
+    let myCat = getCategoryIds();
+let myClues = await getCategory(myCat);
+let numArr = myClues.map(ele=> ele.clues.length);
+
+//check if each category retrieved from API contains at least 5 questions in clues array if not,
+//re-shuffle and re-check then populate table when finalized 
+
+const checkFive = async function(myClues){
+
+const isFive = (ele)=>ele>4;
+if(numArr.every(isFive)){
+    hideLoadingView();
+fillTable(myClues);
+} else {
+myCat = getCategoryIds();
+myClues = await getCategory(myCat);
+checkFive(myClues);
 }
+}
+checkFive(myClues);
+}
+
+$("#start").on("click", setupAndStart );
 
 /** On click of start / restart button, set up game. */
 

@@ -5,15 +5,70 @@
   #8d2ab5
   #74119c
 */
+@import url('https://fonts.googleapis.com/css2?family=Copse&display=swap')
 
-table {
+
+button{
+  display: flex;
+  text-align: center;
+}  
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Copse', monospace;
+display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url(https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+}
+
+h1{
+  color:#8d2ab5 ;
+}
+#jeopardy {
+  display: flex;
+  background-color: aliceblue;
+}
+.catName {
+  text-align: center;
+}
+.category {
+  background-color: lightgoldenrodyellow;
+}
+
+.card { 
+  width: 160px;
+  height: 120px;
+  background-color: aqua;
+  border: solid lightblue 5px;
+  text-align: center;
+
+  /* font-size: 100px; */
+  margin: 5px;
+  padding: 5px;
+  line-height: 120px;
+ 
+ 
+}
+
+
+
+@media print {
+  .card-text {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    overflow: visible;
+  }
+}
+
+/* table {
   width : 100%
 }
+
 td {
   width: 25%;
   height: 50px;
   border: solid 1px #666;
  
-}
-
-
+} */
