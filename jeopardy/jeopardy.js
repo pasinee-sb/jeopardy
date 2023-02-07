@@ -107,8 +107,8 @@ const $column = $(`<div class="category"></div>`);
            
 
 }
-// data.forEach((element,index)=>{
-//     console.log(element, index);})
+data.forEach((element,index)=>{
+    console.log(element, index);})
 
 }
 

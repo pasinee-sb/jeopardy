@@ -38,11 +38,13 @@ h1{
 }
 
 .card { 
+  display: flex;
+  justify-content: center;
   width: 180px;
   height: 160px;
   background-color: aqua;
   border: solid lightblue 5px;
-  text-align: center;
+  align-items: center;
 
   /* font-size: 100px; */
   margin: 5px;
@@ -53,9 +55,12 @@ h1{
  
 }
 .question, .answer {
-  font-size : "10px";
+  flex: 0 0 120px;
+  font-size : 12px;
 line-height: normal;
 word-wrap: break-word;
+text-align: center;
+vertical-align: middle;
 }
 
 /* .my-card, .my-answer {
