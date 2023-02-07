@@ -72,10 +72,9 @@ async function getCategory(catId) {
 }
 
 /** Fill the HTML table#jeopardy with the categories & cells for questions.
- *
- * - The <thead> should be filled w/a <tr>, and a <td> for each category
- * - The <tbody> should be filled w/NUM_QUESTIONS_PER_CAT <tr>s,
- *   each with a question for each category in a <td>
+
+ 
+ 
  *   (initally, just show a "?" where the question/answer would go.)
  */
 
@@ -83,8 +82,11 @@ async function fillTable(myClues) {
 
 
     for (let clue of myClues){
-
+        // *- Randomize 5 questions from the pool of each category (myClues)
     let setOfClues = _.sampleSize(clue.clues, 5);
+
+    // * - Each <div .category> column filled w/a <div .catName> for each category
+
 const $column = $(`<div class="category"></div>`);
     
     const $catTitle = $(`<div class="catName"><p>${clue.title}<p></div>`);
@@ -94,8 +96,11 @@ const $column = $(`<div class="category"></div>`);
 
 
             setOfClues.forEach((element) => {
-
+              
+//push each set of question and answer to an array of data, this array will gather all 30 sets of questions and answers
                 data.push({question: `${element.question}`, answer: `${element.answer}`});
+
+                  // * - create  <div .card>  filled w/ each randomized question for each category and assign id based on the index in data array
 
                 let $card = $(`<div class="card" id=${data.length-1}>?</div>`);
                 $catTitle.append($card);
@@ -107,8 +112,8 @@ const $column = $(`<div class="category"></div>`);
            
 
 }
-data.forEach((element,index)=>{
-    console.log(element, index);})
+// data.forEach((element,index)=>{
+//     console.log(element, index);})
 
 }
 
@@ -117,10 +122,10 @@ data.forEach((element,index)=>{
 
 /** Handle clicking on a clue: show the question or answer.
  *
- * Uses .showing property on clue to determine what to show:
- * - if currently null, show question & set .showing to "question"
- * - if currently "question", show answer & set .showing to "answer"
- * - if currently "answer", ignore click
+ * Uses .question class to determine what to show:
+ * - if currently no .question, add .question and show "question"
+ * - if currently .question,add .answer & show "answer"
+
  * */
 
 async function handleClick(evt) {
@@ -141,13 +146,7 @@ return
 }
 
 
-/** Wipe the current Jeopardy board, show the loading spinner,
- * and update the button used to fetch data.
- */
 
-function showLoadingView() {
-
-}
 
 /** Remove the loading spinner and update the button used to fetch data. */
 
@@ -159,7 +158,7 @@ function hideLoadingView() {
  *
  * - get random category Ids
  * - get data for each category
- * - create HTML table
+ * - create HTML table and fill clues by catagory
  * */
 
 async function setupAndStart(evt) {
