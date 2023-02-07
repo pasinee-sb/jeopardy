@@ -19,12 +19,15 @@
 //  ]
 
 
+let data = [];
+
+
+
+
 /** Get NUM_CATEGORIES random category from API.
  *
  * Returns array of category ids
  */
-
-
 function  getCategoryIds() {
   const numbers = Array. from( {length: 1000}, (item, index) => item = index + 1 ); 
 return (_.sampleSize(numbers, 6));
@@ -80,6 +83,7 @@ async function fillTable(myClues) {
 
 
     for (let clue of myClues){
+
     let setOfClues = _.sampleSize(clue.clues, 5);
 const $column = $(`<div class="category"></div>`);
     
@@ -87,20 +91,26 @@ const $column = $(`<div class="category"></div>`);
     
     $("#jeopardy").append($column).append($catTitle);
 
-console.log(setOfClues);
 
-            for(let question of setOfClues){
 
-    const $card = $(`<div class="card" question="${question.question}" answer="${question.answer}" showing=${question.showing}">?</div>`);
-    $catTitle.append($card);
-    
-  
-    $card.on("click", handleClick)
+            setOfClues.forEach((element) => {
+
+                data.push({question: `${element.question}`, answer: `${element.answer}`});
+
+                let $card = $(`<div class="card" id=${data.length-1}>?</div>`);
+                $catTitle.append($card);
+                // console.log($card);
+               $card.on("click", handleClick)
+                
+          
+            })
+           
+
 }
-}
+// data.forEach((element,index)=>{
+//     console.log(element, index);})
 
 }
-
 
 
 
@@ -115,52 +125,20 @@ console.log(setOfClues);
 
 async function handleClick(evt) {
 
+let myCard = evt.target;
+if(!myCard.classList.contains('question')){
+    myCard.classList.add('question');
+    myCard.innerHTML = data[myCard.id].question;
+  
+}
+else {
 
-    this.innerHTML = "";
-this.style.fontSize = "12px";
-this.style.lineHeight = "30px";
-const qDisplay = document.createElement('div');
-qDisplay.classList.add("my-card");
-const textDisplay =document.createElement('span');
-textDisplay.classList.add("card-text");
-textDisplay.innerHTML = this.getAttribute('question');
-const myButton = document.createElement('button');
-myButton.innerText = "answer";
-
-// const aDisplay = document.createElement('div');
-// aDisplay.classList.add("my-answer");
-const answerDisplay =document.createElement('span');
-answerDisplay.classList.add("card-answer");
-answerDisplay.innerHTML = this.getAttribute('answer');
-
-
-
-
-this.append(qDisplay);
-qDisplay.append(textDisplay);
-qDisplay.append(myButton);
-
-// this.append(aDisplay);
-qDisplay.append(answerDisplay);
-answerDisplay.classList.add('no-show');
-
-
-myButton.addEventListener("click", answer)
-
+    myCard.classList.add('answer');
+    myCard.innerHTML = data[myCard.id].answer;
+}
+return
 
 }
-
-async function answer() {
-
-   console.log(this.parentElement);
-   this.parentElement.children[0].classList.add('no-show');
-   this.parentElement.children[1].classList.add('no-show');
-   this.parentElement.children[2].classList.remove('no-show')
-
-
-
-
- }
 
 
 /** Wipe the current Jeopardy board, show the loading spinner,
@@ -186,6 +164,9 @@ function hideLoadingView() {
 
 async function setupAndStart(evt) {
     evt.preventDefault();
+    
+    $("#jeopardy").empty();
+    
     let myCat = getCategoryIds();
 let myClues = await getCategory(myCat);
 let numArr = myClues.map(ele=> ele.clues.length);

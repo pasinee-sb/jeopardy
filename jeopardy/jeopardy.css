@@ -38,8 +38,8 @@ h1{
 }
 
 .card { 
-  width: 160px;
-  height: 120px;
+  width: 180px;
+  height: 160px;
   background-color: aqua;
   border: solid lightblue 5px;
   text-align: center;
@@ -48,27 +48,32 @@ h1{
   margin: 5px;
   padding: 5px;
   line-height: 120px;
-  position: relative;
+  /* position: relative; */
  
  
 }
+.question, .answer {
+  font-size : "10px";
+line-height: normal;
+word-wrap: break-word;
+}
 
-.my-card, .my-answer {
+/* .my-card, .my-answer {
   position: absolute;
-}
-
+} */
+/* 
 .no-show {
-  display: none;
-}
+  visibility: hidden;
+} */
 
 
-@media print {
+/* @media print {
   .card-text {
     position: absolute;
     left: 0; right: 0; top: 0; bottom: 0;
     overflow: visible;
   }
-}
+} */
 
 /* table {
   width : 100%
